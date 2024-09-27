@@ -33,15 +33,30 @@ export class ProductService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-    let newProduct = this.productRepository.preload({
+    // Preload the existing product data
+    const newProduct = await this.productRepository.preload({
       id,
-      ...updateProductDto
-    })
-    if(!newProduct){
+      ...updateProductDto,
+    });
+  
+    // Check if the product exists
+    if (!newProduct) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    return await newProduct ;
+  
+    // If stock amount is updated, handle it (optional)
+    if (updateProductDto.productInStock) {
+      const existingProduct = await this.productRepository.findOne({ where: { id } });
+      if (existingProduct) {
+
+        existingProduct.productInStock = newProduct.productInStock;
+      }
+    }
+  
+    // Save the updated product to the database
+    return await this.productRepository.save(newProduct);
   }
+  
 
   async remove(id: number): Promise<void> {
     const result = await this.productRepository.delete(id); // No need for `+id`, it's already a number
