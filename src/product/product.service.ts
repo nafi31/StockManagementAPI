@@ -37,11 +37,11 @@ export class ProductService {
   
 
   async findAll(): Promise<Product[]> {
-    return await this.productRepository.find();
+    return await this.productRepository.find({relations: ['product']});
   }
 
   async findOne(id: number) :Promise<Product> {
-    let singleProduct = this.productRepository.findOne({where: {id}})
+    let singleProduct = this.productRepository.findOne({where: {id},relations:['product']})
     if(!singleProduct){
       throw new NotFoundException(`Product with ID ${id} not found`);
     }

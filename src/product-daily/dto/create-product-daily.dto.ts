@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsInt, IsDate, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber,IsDateString,IsInt, IsDate, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateProductDailyDto {
   
@@ -22,16 +22,21 @@ export class CreateProductDailyDto {
 
 
 
-//    @IsNotEmpty()
-//    @IsNumber()
-//    @Min(1)
-//    shiftManagerId: number;
-@ApiProperty({
-    description:'Date of creation',
+   @IsNotEmpty()
+   @IsNumber()
+   @Min(1)
+   @ApiProperty({
+    description:'Shift managers id',
     required:true
 })
-    @IsNotEmpty()
-    @IsInt()  // Expecting a timestamp (number)
-    @Min(0)   // Ensure date is valid
-    date: number;
+   shiftManagerId: number;
+
+@IsNotEmpty()
+  @IsDateString()  // Expecting a timestamp (integer)
+  @Min(0)   // Ensure date is valid
+  @ApiProperty({
+    description: 'Date of creation',
+    required: true,
+  })
+  date: number;
 }

@@ -4,6 +4,7 @@ import { CreateProductDailyDto } from './dto/create-product-daily.dto';
 import { UpdateProductDailyDto } from './dto/update-product-daily.dto';
 import { ProductDaily } from './entities/product-daily.entity';
 import { Repository } from 'typeorm';
+import { Shiftmanager } from 'src/shiftmanager/entities/shiftmanager.entity';
 import { Product } from 'src/product/entities/product.entity';
 @Injectable()
 export class ProductDailyService {
@@ -37,7 +38,7 @@ export class ProductDailyService {
   }
 
   async findAll() : Promise<ProductDaily[]>{
-    const allProductMade = await this.productdailyRepo.find();
+    const allProductMade = await this.productdailyRepo.find({relations: ['product','shiftManager']});
     if(!allProductMade){
       throw new NotFoundException("There are no products made");
     }
@@ -46,7 +47,7 @@ export class ProductDailyService {
 
 
   async findOne(id: number):Promise<ProductDaily> {
-    const clientSerarch = await this.productdailyRepo.findOne({where :{id}})
+    const clientSerarch = await this.productdailyRepo.findOne({where :{id},relations: ['product','shiftManager']})
     if(!clientSerarch){
       throw new NotFoundException(`There are no Clients with id ${id}`);
     }

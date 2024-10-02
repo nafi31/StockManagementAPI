@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
-//import { ShiftManager } from './shift-manager.entity';
+import { Shiftmanager } from 'src/shiftmanager/entities/shiftmanager.entity';
 
 @Entity()
 export class ProductDaily {
@@ -15,10 +15,10 @@ export class ProductDaily {
     
     
     
-    //    @ManyToOne(() => ShiftManager, (manager) => manager.id)
-    //    shiftManager: ShiftManager;  
+    @ManyToOne(() => Shiftmanager, (manager) => manager.id)
+    shiftManager: Shiftmanager;   
 
     
-    @Column('real')
-    date: number;
+    @Column('datetime')
+    date: Date;
 }
