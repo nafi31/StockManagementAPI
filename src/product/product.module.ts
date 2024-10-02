@@ -12,5 +12,6 @@ import { ProductvariantModule } from 'src/productvariant/productvariant.module';
   ],
   controllers: [ProductController],
   providers: [ProductService],
+  exports:[TypeOrmModule]
 })
 export class ProductModule {}

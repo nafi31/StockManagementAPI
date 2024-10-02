@@ -51,10 +51,10 @@ export class ProductvariantService {
   }
 
   async remove(id: number): Promise<void>{
-    const variant = this.variantRepository.findOne({where : {id}})
-    if(!variant){
+    const variant = await this.variantRepository.delete(id);
+    if(  variant.affected==0){
       throw new NotFoundException(`Variant with Id ${id} Not found`)
     }
-    await this.variantRepository.delete(id);
+    
   }
 }

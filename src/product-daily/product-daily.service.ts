@@ -4,18 +4,34 @@ import { CreateProductDailyDto } from './dto/create-product-daily.dto';
 import { UpdateProductDailyDto } from './dto/update-product-daily.dto';
 import { ProductDaily } from './entities/product-daily.entity';
 import { Repository } from 'typeorm';
-
+import { Product } from 'src/product/entities/product.entity';
 @Injectable()
 export class ProductDailyService {
 
   constructor(
     @InjectRepository(ProductDaily)
 
-    private readonly productdailyRepo: Repository<ProductDaily>
+    private readonly productdailyRepo: Repository<ProductDaily>,
+    @InjectRepository(Product)
 
+    private readonly productRepository : Repository<Product>
   ){}
   async create(createProductDailyDto: CreateProductDailyDto):Promise<ProductDaily> {
+    const {productId,amountDaily} = createProductDailyDto
     const productDailyNew  = await this.productdailyRepo.create(createProductDailyDto);
+    const product = await this.productRepository.findOne({ where: { id: productId } });
+
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        // Update the productInStock by adding amountDaily
+        product.productInStock += amountDaily;
+
+        // Save the updated product
+        await this.productRepository.save(product);
+
+        
     return await this.productdailyRepo.save(productDailyNew)
 
   }
@@ -54,10 +70,10 @@ export class ProductDailyService {
 
 
   async remove(id: number) : Promise<void> {
-    const prodOfTheDay = await this.productdailyRepo.findOne({where :{id}});
-    if(!prodOfTheDay){
-      throw new NotFoundException("There are no products made");
+    const prodOfTheDay = await this.productdailyRepo.delete(id)
+    if(prodOfTheDay.affected==0){
+      throw new NotFoundException(`There are no products made with id ${id}`);
     }
-    await this.productdailyRepo.delete(id)
+    
   }
 }

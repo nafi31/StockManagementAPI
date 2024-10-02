@@ -5,8 +5,6 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', default: 0 })
-  productMade: number;
 
   @Column({ type: 'int', default: 0 })
   productInStock: number;

@@ -7,11 +7,19 @@ import { join } from 'path';
 import { ProductvariantModule } from './productvariant/productvariant.module';
 import { ProductDailyModule } from './product-daily/product-daily.module';
 import { ClientModule } from './client/client.module';
+import { ShiftmanagerModule } from './shiftmanager/shiftmanager.module';
+import { OrderModule } from './order/order.module';
 @Module({
-  imports: [TypeOrmModule.forRoot({ type: 'sqlite',
-    database: join(__dirname, 'database.db'), // Path to your SQLite database file
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: true, }),
+  imports: [TypeOrmModule.forRoot({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: '',
+    database: 'StockManagement',
+    entities: [join(__dirname, '**', '*.entity{.ts,.js}')],
+    synchronize: false, // Set to 'false' in production
+  }),
     
     ProductModule,
     
@@ -19,7 +27,11 @@ import { ClientModule } from './client/client.module';
     
     ProductDailyModule,
     
-    ClientModule],
+    ClientModule,
+    
+    ShiftmanagerModule,
+    
+    OrderModule],
     
   controllers: [AppController],
   providers: [AppService],

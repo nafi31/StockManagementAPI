@@ -14,9 +14,6 @@ export class ProductDaily {
     amountDaily: number;   
     
     
-    @Column()
-    totalInStock: number; 
-    
     
     //    @ManyToOne(() => ShiftManager, (manager) => manager.id)
     //    shiftManager: ShiftManager;  
