@@ -11,9 +11,9 @@ export class Product {
   @Column({ type: 'int', default: 0 })
   productInStock: number;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   dateCreated: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'timestamp' })
   dateUpdated: Date;
 }

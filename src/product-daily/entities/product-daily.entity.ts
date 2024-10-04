@@ -19,6 +19,6 @@ export class ProductDaily {
     shiftManager: Shiftmanager;   
 
     
-    @Column({type:'datetime'})
+    @Column({type:'timestamp'})
     date: Date;
 }

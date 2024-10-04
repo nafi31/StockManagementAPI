@@ -10,7 +10,7 @@ export class Order {
   @ManyToOne(() => Client,{ cascade: true, onDelete: 'CASCADE' })
   client: Client; // This will store clientId as a foreign key
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   date: Date;
 
   @ManyToOne(() => Product,{ cascade: true, onDelete: 'CASCADE' })
