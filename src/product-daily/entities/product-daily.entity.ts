@@ -7,7 +7,7 @@ export class ProductDaily {
     @PrimaryGeneratedColumn()
     id: number; 
 
-    @ManyToOne(() => Product, (product) => product.id)
+    @ManyToOne(() => Product, (product) => product.id,{ cascade: true, onDelete: 'CASCADE' })
     product: Product;   
 
     @Column()
@@ -15,10 +15,10 @@ export class ProductDaily {
     
     
     
-    @ManyToOne(() => Shiftmanager, (manager) => manager.id)
+    @ManyToOne(() => Shiftmanager, (manager) => manager.id,{ cascade: true, onDelete: 'CASCADE' })
     shiftManager: Shiftmanager;   
 
     
-    @Column('datetime')
+    @Column({type:'datetime'})
     date: Date;
 }

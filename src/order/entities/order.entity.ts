@@ -7,13 +7,13 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client)
+  @ManyToOne(() => Client,{ cascade: true, onDelete: 'CASCADE' })
   client: Client; // This will store clientId as a foreign key
 
   @Column({ type: 'datetime' })
   date: Date;
 
-  @ManyToOne(() => Product)
+  @ManyToOne(() => Product,{ cascade: true, onDelete: 'CASCADE' })
   product: Product; // This will store productId as a foreign key
 
   @Column({ type: 'int' })

@@ -10,14 +10,7 @@ export class CreateOrderDto {
   })
   clientId: number;
 
-  @IsNotEmpty()
-  @IsDateString()  // Expecting a timestamp (integer)
-  @Min(0)   // Ensure date is valid
-  @ApiProperty({
-    description: 'Date of creation',
-    required: true,
-  })
-  date: number;
+  
 
   @IsNotEmpty()
   @IsNumber()

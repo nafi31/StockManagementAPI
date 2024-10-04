@@ -15,17 +15,30 @@ export class ProductDailyService {
     private readonly productdailyRepo: Repository<ProductDaily>,
     @InjectRepository(Product)
 
-    private readonly productRepository : Repository<Product>
+    private readonly productRepository : Repository<Product>,
+
+
+    @InjectRepository(Shiftmanager)
+
+    private readonly managerRepository : Repository<Shiftmanager>
+
+
   ){}
   async create(createProductDailyDto: CreateProductDailyDto):Promise<ProductDaily> {
-    const {productId,amountDaily} = createProductDailyDto
-    const productDailyNew  = await this.productdailyRepo.create(createProductDailyDto);
+    const {productId,amountDaily,shiftManagerId} = createProductDailyDto
+    
     const product = await this.productRepository.findOne({ where: { id: productId } });
 
         if (!product) {
             throw new Error('Product not found');
         }
+        const manager = await this.managerRepository.findOne({ where: { id: shiftManagerId } });
 
+        if (!manager) {
+            throw new Error('Manager not found');
+        }
+        const productDailyNew  = await this.productdailyRepo.create({...createProductDailyDto,product,date: new Date()});
+        productDailyNew.shiftManager = manager;
         // Update the productInStock by adding amountDaily
         product.productInStock += amountDaily;
 

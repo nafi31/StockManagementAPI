@@ -2,14 +2,12 @@ import { IsNotEmpty, IsString, IsNumber,IsOptional, Min } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateProductDto {
     @IsNotEmpty()
-    @IsOptional()
-    @IsNumber()
+    @IsString()
     @ApiProperty({
-        description:'The variants id',
+        description:'The Products Name',
         required:true
     })
-    variantId: number;  // To associate the product with a product variant
-    
+    productName: string;
  
     @IsNotEmpty()
     @IsNumber()

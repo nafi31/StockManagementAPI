@@ -37,7 +37,7 @@ export class OrderService {
     
       const order = this.orderRepo.create({
         ...createOrderDto,
-        date: new Date(createOrderDto.date),
+        date: new Date(),
         product,  
         client,   
       });

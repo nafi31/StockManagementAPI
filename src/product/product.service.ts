@@ -4,16 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { ProductVariant } from 'src/productvariant/entities/productvariant.entity';
+
 @Injectable()
 export class ProductService {
   
   constructor( 
     @InjectRepository(Product)
     private readonly productRepository : Repository<Product>,
-    @InjectRepository(ProductVariant)
-      private readonly variantRepository : Repository<ProductVariant>
-  
+    
 
   ){}
 
@@ -23,13 +21,6 @@ export class ProductService {
   
     // Create a new Product with the associated ProductVariant
     const product =await  this.productRepository.create(createProductDto);
-
-    let variant = await this.variantRepository.findOne({where :{id:createProductDto.variantId}})
-    if(!variant){
-      throw new NotFoundException("Variant does not exist")
-    }
-
-    product.variant = variant;
     
     return await this.productRepository.save(product)
   
@@ -37,11 +28,11 @@ export class ProductService {
   
 
   async findAll(): Promise<Product[]> {
-    return await this.productRepository.find({relations: ['product']});
+    return await this.productRepository.find();
   }
 
   async findOne(id: number) :Promise<Product> {
-    let singleProduct = this.productRepository.findOne({where: {id},relations:['product']})
+    let singleProduct = this.productRepository.findOne({where: {id}})
     if(!singleProduct){
       throw new NotFoundException(`Product with ID ${id} not found`);
     }

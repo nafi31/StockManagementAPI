@@ -41,7 +41,8 @@ export class ClientService {
     if(!clientSerarch){
       throw new NotFoundException(`There are no Clients with id ${id}`);
     }
-    clientSerarch.clientName = updateClientDto.clientName
+    clientSerarch.clientName = updateClientDto.clientName;
+    await this.clientRepo.save(clientSerarch)
     return clientSerarch;
   }
 

@@ -4,11 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './product/product.module';
 import { join } from 'path';
-import { ProductvariantModule } from './productvariant/productvariant.module';
+
 import { ProductDailyModule } from './product-daily/product-daily.module';
 import { ClientModule } from './client/client.module';
 import { ShiftmanagerModule } from './shiftmanager/shiftmanager.module';
 import { OrderModule } from './order/order.module';
+
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
@@ -23,7 +24,7 @@ import { OrderModule } from './order/order.module';
     
     ProductModule,
     
-    ProductvariantModule,
+    
     
     ProductDailyModule,
     
