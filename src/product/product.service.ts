@@ -58,6 +58,7 @@ export class ProductService {
 
         existingProduct.productInStock = newProduct.productInStock;
       }
+      
     }
   
     // Save the updated product to the database
