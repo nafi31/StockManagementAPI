@@ -1,0 +1,7 @@
+[build]
+  functions = "netlify/functions" # Define the directory for Netlify Functions
+  publish = "dist"                 # Output directory after build
+  command = "npm run build"        # Command to build your app
+
+[functions]
+  node_bundler = "esbuild"         # Optional: You can choose the bundler if needed
