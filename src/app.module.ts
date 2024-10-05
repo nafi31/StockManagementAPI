@@ -12,18 +12,18 @@ import { OrderModule } from './order/order.module';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true, // Makes .env variables available globally
-    }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-    }),
+      TypeOrmModule.forRoot({
+        type: 'postgres',
+        host: 'ep-frosty-cherry-a2yqz63g.eu-central-1.aws.neon.tech',
+        port: 5432,
+        username: 'Stock_owner',
+        password: 'r3OARtkISzn6',
+        database: 'Stock',
+        ssl: { rejectUnauthorized: false },
+        entities: [__dirname + '/**/*.entity{.ts,.js}'], // Include your entities here
+        synchronize: true, // Only for development
+      }),
+    
     ProductModule,
     ProductDailyModule,
     ClientModule,

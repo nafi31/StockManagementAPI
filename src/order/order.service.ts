@@ -1,4 +1,4 @@
-import { Injectable ,NotFoundException} from '@nestjs/common';
+import { Injectable ,NotFoundException,BadRequestException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -39,11 +39,11 @@ export class OrderService {
       }
 
       // Update product stock
-      product.productInStock -= amountInBag;
+      product.productInStock -= Number(amountInBag);
 
       // If the order isn't paid, add the price to the client's debt
       if (!paid) {
-        client.debtAmount += priceInTotal;
+        client.debtAmount += Number(priceInTotal);
       }
 
       await manager.save(Product, product);

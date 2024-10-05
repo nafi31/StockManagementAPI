@@ -37,25 +37,26 @@ export class ClientService {
   }
 
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
-    const clientSearch = await this.clientRepo.findOne({ where: { id } });
-    if (!clientSearch) {
-      throw new NotFoundException(`There are no Clients with id ${id}`);
+    const client = await this.clientRepo.findOne({ where: { id } });
+    if (!client) {
+      throw new NotFoundException(`No client with id ${id} found`);
     }
-
-    if (updateClientDto.clientName) {
-      clientSearch.clientName = updateClientDto.clientName;
+  
+    // Update client properties
+    client.clientName = updateClientDto.clientName;
+  
+    // Ensure debtAmount is treated as a number
+    const newDebtAmount = Number(updateClientDto.debtAmount);
+    if (isNaN(newDebtAmount)) {
+      throw new BadRequestException('Invalid debt amount');
     }
-
-    if (updateClientDto.debtPaid) {
-      if (updateClientDto.debtPaid > clientSearch.debtAmount) {
-        throw new BadRequestException('Debt paid cannot be greater than current debt amount');
-      }
-      clientSearch.debtAmount -= updateClientDto.debtPaid;
-    }
-
-    await this.clientRepo.save(clientSearch);
-    return clientSearch;
-}
+  
+    // Update the debt amount correctly
+    client.debtAmount = newDebtAmount;
+  
+    return await this.clientRepo.save(client);
+  }
+  
 
   async remove(id: number) : Promise<void> {
     const rmClient = await this.clientRepo.findOne({where :{id}});
