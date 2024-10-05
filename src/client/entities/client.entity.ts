@@ -7,4 +7,7 @@ export class Client {
 
     @Column()
     clientName: string;
+
+    @Column()
+    debtAmount:number;
 }

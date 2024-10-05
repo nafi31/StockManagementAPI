@@ -19,31 +19,70 @@ export class OrderService {
       private readonly clientRepo: Repository<Client>,
     ) {}
   
-    async create(createOrderDto: CreateOrderDto): Promise<Order> {
-      const { clientId, productId, amountInBag } = createOrderDto;
-    
-      const product = await this.productRepo.findOne({ where: { id: productId } });
+    import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Order } from './order.entity';
+import { Product } from './product.entity';
+import { Client } from './client.entity';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { Connection } from 'typeorm';
+
+@Injectable()
+export class OrderService {
+  constructor(
+    @InjectRepository(Order)
+    private readonly orderRepo: Repository<Order>,
+    @InjectRepository(Product)
+    private readonly productRepo: Repository<Product>,
+    @InjectRepository(Client)
+    private readonly clientRepo: Repository<Client>,
+    private readonly connection: Connection, // For transactions
+  ) {}
+
+  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    const { clientId, productId, amountInBag, priceInTotal, paid } = createOrderDto;
+
+    return this.connection.transaction(async (manager) => {
+      const product = await manager.findOne(Product, { where: { id: productId } });
       if (!product) {
         throw new NotFoundException(`No product with id ${productId} found`);
       }
-    
-      const client = await this.clientRepo.findOne({ where: { id: clientId } });
+
+      // Check if there is enough stock
+      if (product.productInStock < amountInBag) {
+        throw new BadRequestException(`Not enough stock for product with id ${productId}`);
+      }
+
+      const client = await manager.findOne(Client, { where: { id: clientId } });
       if (!client) {
         throw new NotFoundException(`No client with id ${clientId} found`);
       }
-    
+
+      // Update product stock
       product.productInStock -= amountInBag;
-      await this.productRepo.save(product);
-    
-      const order = this.orderRepo.create({
+
+      // If the order isn't paid, add the price to the client's debt
+      if (!paid) {
+        client.debtAmount += priceInTotal;
+      }
+
+      await manager.save(Product, product);
+      await manager.save(Client, client);
+
+      // Create and save the new order
+      const order = manager.create(Order, {
         ...createOrderDto,
         date: new Date(),
-        product,  
-        client,   
+        product,
+        client,
       });
-    
-      return await this.orderRepo.save(order);
-    }
+
+      return await manager.save(Order, order);
+    });
+  }
+
+
 
 
 

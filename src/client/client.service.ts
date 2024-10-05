@@ -1,4 +1,4 @@
-import { Injectable ,NotFoundException} from '@nestjs/common';
+import { Injectable ,NotFoundException,BadRequestException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -37,14 +37,25 @@ export class ClientService {
   }
 
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
-    const clientSerarch = await this.clientRepo.findOne({where :{id}})
-    if(!clientSerarch){
+    const clientSearch = await this.clientRepo.findOne({ where: { id } });
+    if (!clientSearch) {
       throw new NotFoundException(`There are no Clients with id ${id}`);
     }
-    clientSerarch.clientName = updateClientDto.clientName;
-    await this.clientRepo.save(clientSerarch)
-    return clientSerarch;
-  }
+
+    if (updateClientDto.clientName) {
+      clientSearch.clientName = updateClientDto.clientName;
+    }
+
+    if (updateClientDto.debtPaid) {
+      if (updateClientDto.debtPaid > clientSearch.debtAmount) {
+        throw new BadRequestException('Debt paid cannot be greater than current debt amount');
+      }
+      clientSearch.debtAmount -= updateClientDto.debtPaid;
+    }
+
+    await this.clientRepo.save(clientSearch);
+    return clientSearch;
+}
 
   async remove(id: number) : Promise<void> {
     const rmClient = await this.clientRepo.findOne({where :{id}});
