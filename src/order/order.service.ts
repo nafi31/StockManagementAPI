@@ -6,28 +6,7 @@ import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Client } from 'src/client/entities/client.entity';
-@Injectable()
-export class OrderService {
-    constructor(
-      @InjectRepository(Order)
-      private readonly orderRepo: Repository<Order>,
-  
-      @InjectRepository(Product)
-      private readonly productRepo: Repository<Product>,
-  
-      @InjectRepository(Client)
-      private readonly clientRepo: Repository<Client>,
-    ) {}
-  
-    import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Order } from './order.entity';
-import { Product } from './product.entity';
-import { Client } from './client.entity';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { Connection } from 'typeorm';
-
 @Injectable()
 export class OrderService {
   constructor(
