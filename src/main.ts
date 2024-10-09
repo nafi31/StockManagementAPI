@@ -2,6 +2,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { CorsOptions } from 'cors';
+import { RolesGuard } from './core/guards';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -17,6 +18,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
     credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
   });
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();

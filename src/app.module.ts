@@ -4,12 +4,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './product/product.module';
 import { join } from 'path';
-
+import { APP_GUARD } from '@nestjs/core';
+import { Reflector } from '@nestjs/core';
 import { ProductDailyModule } from './product-daily/product-daily.module';
 import { ClientModule } from './client/client.module';
 import { ShiftmanagerModule } from './shiftmanager/shiftmanager.module';
 import { OrderModule } from './order/order.module';
-import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { RolesGuard } from './core/guards';
 @Module({
   imports: [
       TypeOrmModule.forRoot({
@@ -18,10 +21,11 @@ import { ConfigModule } from '@nestjs/config';
         port: 5432,
         username: 'Stock_owner',
         password: 'r3OARtkISzn6',
-        database: 'Stock',
+        database: 'stockman',
         ssl: { rejectUnauthorized: false },
         entities: [__dirname + '/**/*.entity{.ts,.js}'], // Include your entities here
-        synchronize: true, // Only for development
+        synchronize: true, 
+        autoLoadEntities: true,// Only for development
       }),
     
     ProductModule,
@@ -29,8 +33,11 @@ import { ConfigModule } from '@nestjs/config';
     ClientModule,
     ShiftmanagerModule,
     OrderModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService
+  ],
 })
 export class AppModule {}
