@@ -30,13 +30,12 @@ export class AuthService {
   async create(createUser: RegisterDto) {
     const { phoneNumber, password, role } = createUser;
 
-    // Check for existing user
     const existingUser = await this.userRepo.findOne({ where: { phoneNumber } });
     if (existingUser) {
       throw new ConflictException('Phone number already exists');
     }
 
-    // Hash the password before saving
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = this.userRepo.create({

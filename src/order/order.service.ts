@@ -21,7 +21,7 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const { clientId, productId, amountInBag, priceInTotal, paid } = createOrderDto;
-    console.log(productId)
+    
     return this.connection.transaction(async (manager) => {
       const product = await manager.findOne(Product, { where: { id: productId } });
       if (!product) {
