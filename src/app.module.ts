@@ -17,11 +17,11 @@ import { RolesGuard } from './core/guards';
   imports: [
       TypeOrmModule.forRoot({
         type: 'postgres',
-        host: 'ep-frosty-cherry-a2yqz63g.eu-central-1.aws.neon.tech',
+        host: process.env.HOSTNAME,
         port: 5432,
-        username: 'Stock_owner',
-        password: 'r3OARtkISzn6',
-        database: 'stockman',
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        database: process.env.DB,
         ssl: { rejectUnauthorized: false },
         entities: [__dirname + '/**/*.entity{.ts,.js}'], // Include your entities here
         synchronize: true, 
