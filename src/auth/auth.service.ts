@@ -48,28 +48,37 @@ export class AuthService {
   }
 
   async login(phoneNumber: number, password: string) {
-    
     const usr = await this.userRepo.findOne({ where: { phoneNumber } });
-
+  
     if (!usr) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid phoneNumber');
     }
-
+  
+    // Log the entered password and the stored hashed password for debugging purposes
+    console.log("Entered Password:", password);
+    console.log("Stored Hash:", usr.password);
+  
+    // Compare the entered plain password with the stored hash using bcrypt.compare
     const isPasswordValid = await bcrypt.compare(password, usr.password);
+    
+    // Log the result of bcrypt.compare to see if the password is valid
+    console.log("Is Password Valid?", isPasswordValid);
+  
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-
+  
     const payload = {
       id: usr.id,
       phoneNumber: usr.phoneNumber,
       role: usr.role,
     };
-
-    const token = await this.jwtService.sign(payload, {
+  
+    const token =  this.jwtService.sign(payload, {
       expiresIn: '60d',
     });
-
+  
     return { phoneNumber: usr.phoneNumber, access_token: token };
   }
+  
 }

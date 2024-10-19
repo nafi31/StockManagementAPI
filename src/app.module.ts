@@ -13,15 +13,16 @@ import { OrderModule } from './order/order.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './core/guards';
+import { InvoiceModule } from './invoice/invoice.module';
 @Module({
   imports: [
       TypeOrmModule.forRoot({
         type: 'postgres',
-        host: 'ep-frosty-cherry-a2yqz63g.eu-central-1.aws.neon.tech',
-        port: 5432,
-        username: 'Stock_owner',
-        password: 'r3OARtkISzn6',
-        database: 'stockman',
+        host: process.env.DATABASE_HOST,
+        port: +process.env.DATABASE_PORT,
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
         ssl: { rejectUnauthorized: false },
         entities: [__dirname + '/**/*.entity{.ts,.js}'], // Include your entities here
         synchronize: true, 
@@ -35,6 +36,7 @@ import { RolesGuard } from './core/guards';
     OrderModule,
     UsersModule,
     AuthModule,
+    InvoiceModule,
   ],
   controllers: [AppController],
   providers: [AppService
