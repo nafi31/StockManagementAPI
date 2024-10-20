@@ -18,6 +18,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
     credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
   });
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();
