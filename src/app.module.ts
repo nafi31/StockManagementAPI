@@ -14,8 +14,12 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './core/guards';
 import { InvoiceModule } from './invoice/invoice.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // This makes the configuration available globally
+    }),
       TypeOrmModule.forRoot({
         type: 'postgres',
         host: process.env.DATABASE_HOST,
