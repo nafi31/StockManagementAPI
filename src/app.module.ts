@@ -18,11 +18,19 @@ import { InvoiceModule } from './invoice/invoice.module';
   imports: [
       TypeOrmModule.forRoot({
         type: 'postgres',
+<<<<<<< HEAD
         host: process.env.DATABASE_HOST,
         port: +process.env.DATABASE_PORT,
         username: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
+=======
+        host: process.env.HOSTNAME,
+        port: 5432,
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        database: process.env.DB,
+>>>>>>> cf4a7102ac56856142e7e5e97b460995b33740d2
         ssl: { rejectUnauthorized: false },
         entities: [__dirname + '/**/*.entity{.ts,.js}'], // Include your entities here
         synchronize: true, 
