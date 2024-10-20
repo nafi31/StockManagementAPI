@@ -6,9 +6,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Client } from 'src/client/entities/client.entity';
-import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/core/guards';
-@UseGuards(AuthGuard('jwt'),RolesGuard)
+
 @Injectable()
 export class InvoiceService {
   constructor(
